@@ -1,15 +1,15 @@
-import Mascot from "./Mascot";
 import Reveal from "./Reveal";
-import { personal } from "@/lib/content";
+import { personal, mascot } from "@/lib/content";
 
+// 7 个坚果吉祥物散布成簇 —— 对应 Moxt 的「每个人一个 momo」
 const cluster = [
-  { color: "var(--color-grass-500)", size: 92, top: "30%", left: "44%", d: 0 },
-  { color: "var(--color-grape)", size: 64, top: "12%", left: "20%", d: 0.5 },
-  { color: "var(--color-tangerine)", size: 70, top: "16%", left: "70%", d: 1 },
-  { color: "var(--color-sky)", size: 58, top: "58%", left: "22%", d: 1.4 },
-  { color: "var(--color-rose)", size: 60, top: "62%", left: "68%", d: 0.8 },
-  { color: "var(--color-grass-400)", size: 50, top: "6%", left: "48%", d: 1.7 },
-  { color: "#34d399", size: 46, top: "72%", left: "46%", d: 0.3 },
+  { name: "green", size: 96, top: "32%", left: "46%", d: 0 },
+  { name: "purple", size: 66, top: "12%", left: "20%", d: 0.5 },
+  { name: "orange", size: 72, top: "16%", left: "72%", d: 1 },
+  { name: "blue", size: 60, top: "60%", left: "22%", d: 1.4 },
+  { name: "red", size: 62, top: "64%", left: "70%", d: 0.8 },
+  { name: "teal", size: 52, top: "6%", left: "48%", d: 1.7 },
+  { name: "yellow", size: 48, top: "74%", left: "46%", d: 0.3 },
 ];
 
 export default function PersonalBrand() {
@@ -25,14 +25,22 @@ export default function PersonalBrand() {
 
         <Reveal delay={120} className="md:order-1">
           <div className="relative mx-auto aspect-square w-full max-w-md">
-            {cluster.map((c, i) => (
-              <div
-                key={i}
-                className="absolute -translate-x-1/2 -translate-y-1/2 animate-float"
-                style={{ top: c.top, left: c.left, animationDelay: `${c.d}s` }}
-              >
-                <Mascot size={c.size} color={c.color} animate={false} />
-              </div>
+            {cluster.map((c) => (
+              <img
+                key={c.name}
+                src={mascot(c.name)}
+                alt=""
+                width={c.size}
+                height={c.size}
+                className="absolute -translate-x-1/2 -translate-y-1/2 animate-float drop-shadow-sm"
+                style={{
+                  top: c.top,
+                  left: c.left,
+                  width: c.size,
+                  height: c.size,
+                  animationDelay: `${c.d}s`,
+                }}
+              />
             ))}
           </div>
         </Reveal>

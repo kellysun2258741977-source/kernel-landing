@@ -1,6 +1,5 @@
-import Mascot from "./Mascot";
 import Reveal from "./Reveal";
-import { capability } from "@/lib/content";
+import { capability, mascot } from "@/lib/content";
 
 const dotColor: Record<string, string> = {
   grass: "bg-grass-500",
@@ -26,7 +25,13 @@ export default function CapabilityOrbit() {
       <Reveal delay={120}>
         <div className="relative mx-auto aspect-square w-full max-w-md">
           <div className="absolute inset-0 grid place-items-center">
-            <Mascot size={170} className="animate-float" />
+            <img
+              src={mascot("green")}
+              alt=""
+              width={170}
+              height={170}
+              className="h-[170px] w-[170px] animate-float drop-shadow-sm"
+            />
           </div>
           {capability.bubbles.map((b, i) => (
             <div

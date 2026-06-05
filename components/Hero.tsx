@@ -1,7 +1,6 @@
-import Mascot from "./Mascot";
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
-import { hero } from "@/lib/content";
+import { hero, mascot } from "@/lib/content";
 
 function Sparkle({ className }: { className?: string }) {
   return (
@@ -58,7 +57,13 @@ export default function Hero() {
         <Sparkle className="absolute right-[10%] top-[24%] h-3 w-3 animate-float [animation-delay:1.2s]" />
         <Sparkle className="absolute left-[18%] bottom-[14%] h-5 w-5 animate-float [animation-delay:0.6s]" />
         <Sparkle className="absolute right-[16%] bottom-[20%] h-3 w-3 animate-float [animation-delay:1.8s]" />
-        <Mascot size={230} className="animate-float drop-shadow-sm" />
+        <img
+          src={mascot("green")}
+          alt="Kernel 吉祥物"
+          width={240}
+          height={240}
+          className="h-[240px] w-[240px] animate-float drop-shadow-sm"
+        />
       </div>
     </section>
   );

@@ -7,6 +7,18 @@ export const brand = {
   tagline: "你的零食研发团队,就在 Kernel。",
 };
 
+// 扁平吉祥物图标(public/assets/mascots/*.png)—— 7 个坚果角色
+export const mascots = [
+  "green",
+  "purple",
+  "orange",
+  "blue",
+  "red",
+  "teal",
+  "yellow",
+] as const;
+export const mascot = (c: string) => `/assets/mascots/${c}.png`;
+
 export const nav = {
   links: [
     { label: "能力", href: "#capabilities" },
@@ -146,6 +158,7 @@ export const aDay = {
     {
       time: "09:00",
       title: "选品洞察",
+      img: "/assets/scenes/insight.png",
       agent: "AGENT:",
       agentText: "输入「Z 世代健康零食」→ 5 个选品方向 + 机会评分已就绪。",
       you: "你:",
@@ -154,6 +167,7 @@ export const aDay = {
     {
       time: "10:30",
       title: "配方灵感",
+      img: "/assets/scenes/recipe.png",
       agent: "AGENT:",
       agentText: "围绕选定方向 → 3 张配方概念卡 + 差异化卖点。",
       you: "你:",
@@ -162,6 +176,7 @@ export const aDay = {
     {
       time: "14:00",
       title: "营销内容",
+      img: "/assets/scenes/content.png",
       agent: "AGENT:",
       agentText: "产品信息 → 小红书 / 抖音多版本文案 + 配图建议。",
       you: "你:",
@@ -170,6 +185,7 @@ export const aDay = {
     {
       time: "16:00",
       title: "一键就绪",
+      img: "/assets/scenes/launch.png",
       agent: "AGENT:",
       agentText: "选品 + 配方 + 文案一套素材全部打包,可导出。",
       you: "你:",
@@ -187,14 +203,17 @@ export const native = {
   cards: [
     {
       title: "全链路覆盖。",
+      img: "/assets/scenes/product.png",
       desc: "选品 → 配方 → 营销,一个空间打通三个环节。不用在调研、研发、内容工具之间反复横跳。",
     },
     {
       title: "越用越懂你。",
+      img: "/assets/scenes/memory.png",
       desc: "记住你的品牌调性、口味偏好、禁忌词。用得越久,每次输出越贴合你的品牌,不用从头解释。",
     },
     {
       title: "给选择权,不给标准答案。",
+      img: "/assets/scenes/focus.png",
       desc: "每个任务输出 2–3 个方案,你来挑。因为你不信任唯一解,但信任「我自己挑的那个」。",
     },
   ],

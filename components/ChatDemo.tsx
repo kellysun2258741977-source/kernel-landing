@@ -1,6 +1,5 @@
-import Mascot from "./Mascot";
 import Reveal from "./Reveal";
-import { chat } from "@/lib/content";
+import { chat, mascot } from "@/lib/content";
 
 export default function ChatDemo() {
   return (
@@ -40,8 +39,8 @@ export default function ChatDemo() {
                 </div>
                 {/* Agent */}
                 <div className="flex gap-3">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-grass-50">
-                    <Mascot size={26} animate={false} />
+                  <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-lg bg-grass-50">
+                    <img src={mascot("green")} alt="" width={30} height={30} />
                   </div>
                   <div>
                     <p className="text-sm">

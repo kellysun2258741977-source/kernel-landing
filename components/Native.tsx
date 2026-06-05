@@ -1,9 +1,6 @@
 import Reveal from "./Reveal";
 import { native } from "@/lib/content";
 
-const art = ["🛠️", "🧠", "🗂️"];
-const tint = ["bg-grass-50", "bg-violet-50", "bg-amber-50"];
-
 export default function Native() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
@@ -24,11 +21,14 @@ export default function Native() {
             delay={i * 100}
             className="rounded-3xl border border-line bg-paper p-7"
           >
-            <div
-              className={`mb-6 grid h-40 place-items-center rounded-2xl ${tint[i]} text-6xl`}
-            >
-              {art[i]}
-            </div>
+            <img
+              src={c.img}
+              alt={c.title}
+              width={640}
+              height={640}
+              loading="lazy"
+              className="mb-6 aspect-[3/2] w-full rounded-2xl object-cover object-top"
+            />
             <h3 className="text-xl font-semibold text-ink">{c.title}</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
               {c.desc}

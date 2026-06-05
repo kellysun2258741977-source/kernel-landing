@@ -1,15 +1,5 @@
-import Mascot from "./Mascot";
 import Reveal from "./Reveal";
-import { oneSpace } from "@/lib/content";
-
-const palette = [
-  "var(--color-grass-500)",
-  "var(--color-grape)",
-  "var(--color-tangerine)",
-  "var(--color-sky)",
-  "var(--color-rose)",
-  "var(--color-grass-400)",
-];
+import { oneSpace, mascots, mascot } from "@/lib/content";
 
 export default function OneSpace() {
   const n = oneSpace.nodes.length;
@@ -49,11 +39,12 @@ export default function OneSpace() {
                 className="absolute flex w-20 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5"
                 style={{ top: `${y}%`, left: `${x}%` }}
               >
-                <Mascot
-                  size={40}
-                  color={palette[i % palette.length]}
-                  animate={false}
-                  className="animate-float"
+                <img
+                  src={mascot(mascots[i % mascots.length])}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 animate-float"
                 />
                 <span className="text-center text-xs font-medium text-ink-soft">
                   {label}
