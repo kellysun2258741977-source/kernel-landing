@@ -83,6 +83,16 @@ export default function ADay() {
             </div>
           </div>
         ))}
+
+        {/* 循环继续 —— 一天的收尾,对应 Moxt 的 loop 卡 */}
+        <div className="flex w-[78vw] shrink-0 snap-start flex-col justify-center rounded-2xl border border-dashed border-grass-200 bg-grass-50/40 p-8 sm:w-[300px]">
+          <span className="font-serif text-3xl text-grass-500">→</span>
+          <p className="mt-6 font-serif text-3xl font-semibold text-ink">
+            {aDay.loop.time}
+          </p>
+          <p className="mt-1 text-ink-soft">{aDay.loop.title}</p>
+        </div>
+
         {/* 末尾留白,最后一张能滑到中部 */}
         <div className="w-6 shrink-0 sm:w-[30vw]" aria-hidden />
       </div>

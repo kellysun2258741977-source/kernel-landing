@@ -1,5 +1,5 @@
 import Reveal from "./Reveal";
-import { native } from "@/lib/content";
+import { native, mascot } from "@/lib/content";
 
 export default function Native() {
   return (
@@ -21,14 +21,18 @@ export default function Native() {
             delay={i * 100}
             className="rounded-3xl border border-line bg-paper p-7"
           >
-            <img
-              src={c.img}
-              alt={c.title}
-              width={640}
-              height={640}
-              loading="lazy"
-              className="mb-6 aspect-[3/2] w-full rounded-2xl object-cover object-top"
-            />
+            <div
+              className={`mb-6 grid h-40 place-items-center rounded-2xl ${c.tint}`}
+            >
+              <img
+                src={mascot(c.mascot)}
+                alt=""
+                width={108}
+                height={108}
+                className="h-[108px] w-[108px] animate-float drop-shadow-sm"
+                style={{ animationDelay: `${i * 0.5}s` }}
+              />
+            </div>
             <h3 className="text-xl font-semibold text-ink">{c.title}</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
               {c.desc}
