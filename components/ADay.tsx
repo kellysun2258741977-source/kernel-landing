@@ -1,29 +1,66 @@
+"use client";
+
+import { useRef } from "react";
 import Reveal from "./Reveal";
 import { aDay } from "@/lib/content";
 
 export default function ADay() {
+  const track = useRef<HTMLDivElement>(null);
+  const drag = useRef({ down: false, startX: 0, left: 0, moved: false });
+
+  const onDown = (e: React.PointerEvent) => {
+    const el = track.current;
+    if (!el) return;
+    drag.current = {
+      down: true,
+      startX: e.pageX,
+      left: el.scrollLeft,
+      moved: false,
+    };
+    el.setPointerCapture(e.pointerId);
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const el = track.current;
+    if (!el || !drag.current.down) return;
+    const dx = e.pageX - drag.current.startX;
+    if (Math.abs(dx) > 4) drag.current.moved = true;
+    el.scrollLeft = drag.current.left - dx;
+  };
+  const onUp = (e: React.PointerEvent) => {
+    drag.current.down = false;
+    track.current?.releasePointerCapture(e.pointerId);
+  };
+
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <Reveal className="mb-14 text-center">
+    <section className="overflow-hidden py-24 md:py-32">
+      <Reveal className="mx-auto mb-14 max-w-6xl px-6 text-center">
         <h2 className="font-serif text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {aDay.heading}
         </h2>
+        <p className="mt-3 text-sm text-ink-faint">← 拖动 / 滑动查看一整天 →</p>
       </Reveal>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {aDay.cards.map((c, i) => (
-          <Reveal
+      <div
+        ref={track}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={onUp}
+        className="flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto scroll-px-6 px-6 pb-4 select-none active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:[scroll-padding-left:max(1.5rem,calc((100vw-72rem)/2))] md:[padding-left:max(1.5rem,calc((100vw-72rem)/2))]"
+      >
+        {aDay.cards.map((c) => (
+          <div
             key={c.time}
-            delay={(i % 4) * 90}
-            className="overflow-hidden rounded-2xl border border-line bg-paper"
+            className="w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-paper sm:w-[340px]"
           >
             <img
               src={c.img}
               alt={c.title}
               width={640}
               height={640}
+              draggable={false}
               loading="lazy"
-              className="aspect-[5/4] w-full object-cover object-top"
+              className="pointer-events-none aspect-[5/4] w-full object-cover object-top"
             />
             <div className="p-5">
               <p className="flex items-center gap-2 text-sm font-medium text-grass-600">
@@ -44,8 +81,10 @@ export default function ADay() {
                 </p>
               </div>
             </div>
-          </Reveal>
+          </div>
         ))}
+        {/* 末尾留白,最后一张能滑到中部 */}
+        <div className="w-6 shrink-0 sm:w-[30vw]" aria-hidden />
       </div>
     </section>
   );
