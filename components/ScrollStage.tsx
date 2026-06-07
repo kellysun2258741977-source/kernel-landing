@@ -10,6 +10,7 @@ import {
   mascots,
   mascot,
 } from "@/lib/content";
+import MascotEyes from "./MascotEyes";
 
 const dotColor: Record<string, string> = {
   grass: "bg-grass-500",
@@ -148,25 +149,19 @@ export default function ScrollStage() {
               </a>
             </div>
             {/* CTA 之后的吉祥物在 Layer 内,保持 pointer-events-none 由父级控制 */}
-            <img
+            <MascotEyes
               src={mascot("green")}
-              alt=""
-              width={340}
-              height={340}
-              className="mt-12 h-[340px] w-[340px] drop-shadow-md animate-float"
+              className="mt-12 h-[340px] w-[340px]"
             />
           </div>
         </Layer>
 
-        {/* 场景 2 · 聚焦 */}
+        {/* 场景 2 · 聚焦(眼睛跟随鼠标) */}
         <Layer opacity={o2}>
           <div className="grid h-full place-items-center">
-            <img
+            <MascotEyes
               src={mascot("green")}
-              alt=""
-              width={440}
-              height={440}
-              className="h-[320px] w-[320px] drop-shadow-lg animate-float sm:h-[440px] sm:w-[440px]"
+              className="h-[320px] w-[320px] sm:h-[440px] sm:w-[440px]"
             />
           </div>
         </Layer>
@@ -185,12 +180,9 @@ export default function ScrollStage() {
             <RightStage>
               {/* 主吉祥物 */}
               <div className="absolute inset-0 grid place-items-center">
-                <img
+                <MascotEyes
                   src={mascot("green")}
-                  alt=""
-                  width={280}
-                  height={280}
-                  className="h-[200px] w-[200px] animate-float sm:h-[280px] sm:w-[280px]"
+                  className="h-[200px] w-[200px] sm:h-[280px] sm:w-[280px]"
                 />
               </div>
               {/* 能力标签(6 个均匀环绕) */}
