@@ -114,11 +114,26 @@ body {
   animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
+/* 眨眼:周期性把眼睛压成一条线再弹回 */
+@keyframes blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  94%, 97% {
+    transform: scaleY(0.08);
+  }
+}
+.animate-blink {
+  transform-origin: center;
+  animation: blink 4.8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-blob,
   .animate-spin-slow,
-  .animate-rise {
+  .animate-rise,
+  .animate-blink {
     animation: none;
   }
   .reveal {

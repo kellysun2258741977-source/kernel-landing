@@ -71,9 +71,9 @@ export default function MascotEyes({
                   filter: "blur(2px)",
                 }}
               />
-              {/* 极简深色眼珠:整体随鼠标平移 */}
+              {/* 极简深色眼珠:外层随鼠标平移,内层做眨眼(压扁) */}
               <div
-                className="pointer-events-none absolute rounded-full bg-[#1c2a1c]"
+                className="pointer-events-none absolute"
                 style={{
                   left: `${e.cx}%`,
                   top: `${e.cy}%`,
@@ -82,7 +82,9 @@ export default function MascotEyes({
                   transform: `translate(calc(-50% + ${eye.dx}px), calc(-50% + ${eye.dy}px))`,
                   transition: "transform 0.12s ease-out",
                 }}
-              />
+              >
+                <div className="animate-blink h-full w-full rounded-full bg-[#1a1a1a]" />
+              </div>
             </Fragment>
           ))}
         </div>
