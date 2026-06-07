@@ -35,7 +35,7 @@ export default function Compare() {
             <Reveal
               key={c.title}
               delay={(i + 1) * 90}
-              className="flex flex-col rounded-3xl border border-line bg-paper p-7"
+              className="flex flex-col rounded-3xl border border-line bg-paper p-7 transition-all hover:-translate-y-1 hover:border-grass-200 hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)]"
             >
               <h3 className="text-lg font-semibold text-ink">{c.title}</h3>
               <p className="mt-4 text-sm font-medium text-grass-600">{c.like}</p>

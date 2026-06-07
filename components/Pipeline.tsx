@@ -18,7 +18,7 @@ export default function Pipeline() {
         <div className="grid gap-4 md:grid-cols-4">
           {pipeline.stages.map((s, i) => (
             <Reveal key={s.step} delay={i * 90} className="relative">
-              <div className="h-full rounded-2xl border border-line bg-paper p-6">
+              <div className="h-full rounded-2xl border border-line bg-paper p-6 transition-all hover:-translate-y-1 hover:border-grass-200 hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)]">
                 <span className="font-serif text-2xl font-semibold text-grass-500">
                   {s.step}
                 </span>
