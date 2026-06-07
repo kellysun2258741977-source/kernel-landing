@@ -8,7 +8,7 @@ export default function Native() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <Reveal className="mx-auto mb-14 max-w-3xl text-center">
-        <h2 className="font-serif text-4xl leading-tight font-semibold tracking-tight text-ink sm:text-[3.25rem]">
+        <h2 className="font-serif text-3xl leading-tight font-semibold tracking-tight text-balance text-ink sm:text-[3.25rem]">
           {native.headingLead}
           <span className="text-grass-500">{native.headingAccent}</span>
           {native.headingTail}

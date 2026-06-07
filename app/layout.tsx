@@ -15,6 +15,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kernel-landing-tau.vercel.app"),
   title: "🌰 Kernel | AI 驱动的零食产品全链路助手",
   description:
     "Kernel 是 AI Agent 驱动的零食产品全链路助手——选品洞察、配方灵感、营销内容,一个空间全搞定。为零食品牌和创业者而造。",
@@ -23,6 +24,9 @@ export const metadata: Metadata = {
     description:
       "选品洞察、配方灵感、营销内容,一个空间全搞定。为零食品牌和创业者而造。",
     type: "website",
+    siteName: "Kernel",
+    locale: "zh_CN",
+    images: ["/assets/scenes/insight.png"],
   },
 };
 
