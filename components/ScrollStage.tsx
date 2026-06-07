@@ -19,34 +19,52 @@ const dotColor: Record<string, string> = {
   rose: "bg-rose",
 };
 
-// 场景4 hub-and-spoke：绿色主角居中，6 个角色辐射分布
+// 场景4 hub-and-spoke：绿色主角居中，6 个角色辐射(放大半径与尺寸)
 const cluster = [
-  { name: "green",  size: 100, top: "50%", left: "50%", user: "王", bg: "#4ade80", fg: "#166534" }, // center hub
-  { name: "teal",   size: 56,  top: "10%", left: "50%", user: "刘", bg: "#2dd4bf", fg: "#134e4a" }, // top
-  { name: "orange", size: 68,  top: "24%", left: "84%", user: "张", bg: "#fb923c", fg: "#7c2d12" }, // top-right
-  { name: "red",    size: 62,  top: "76%", left: "82%", user: "赵", bg: "#f87171", fg: "#7f1d1d" }, // bottom-right
-  { name: "yellow", size: 52,  top: "90%", left: "50%", user: "吴", bg: "#facc15", fg: "#713f12" }, // bottom
-  { name: "blue",   size: 58,  top: "76%", left: "18%", user: "陈", bg: "#60a5fa", fg: "#1e3a8a" }, // bottom-left
-  { name: "purple", size: 66,  top: "24%", left: "16%", user: "李", bg: "#a78bfa", fg: "#4c1d95" }, // top-left
+  { name: "green",  size: 130, top: "50%", left: "50%", user: "王", bg: "#4ade80", fg: "#166534" },
+  { name: "teal",   size: 74,  top: "8%",  left: "50%", user: "刘", bg: "#2dd4bf", fg: "#134e4a" },
+  { name: "orange", size: 88,  top: "22%", left: "88%", user: "张", bg: "#fb923c", fg: "#7c2d12" },
+  { name: "red",    size: 80,  top: "78%", left: "86%", user: "赵", bg: "#f87171", fg: "#7f1d1d" },
+  { name: "yellow", size: 68,  top: "92%", left: "50%", user: "吴", bg: "#facc15", fg: "#713f12" },
+  { name: "blue",   size: 76,  top: "78%", left: "14%", user: "陈", bg: "#60a5fa", fg: "#1e3a8a" },
+  { name: "purple", size: 86,  top: "22%", left: "12%", user: "李", bg: "#a78bfa", fg: "#4c1d95" },
 ];
 
-// SVG 连线从中心 (50,50) 辐射到 6 个节点
+// 场景4 辐射连线：中心(50,50)→6 个角色
 const svgLines = [
-  [50, 50, 50, 10],
-  [50, 50, 84, 24],
-  [50, 50, 82, 76],
-  [50, 50, 50, 90],
-  [50, 50, 18, 76],
-  [50, 50, 16, 24],
+  [50, 50, 50, 8],
+  [50, 50, 88, 22],
+  [50, 50, 86, 78],
+  [50, 50, 50, 92],
+  [50, 50, 14, 78],
+  [50, 50, 12, 22],
 ];
 
-// 场景1 装饰性小 + 号，模仿 moxt 背景点缀
+// 全局星星点缀(复刻 moxt 的散落 + 号,覆盖所有场景背景)
 const sparkles = [
-  { x: "10%", y: "20%" }, { x: "88%", y: "16%" },
-  { x: "6%",  y: "60%" }, { x: "92%", y: "55%" },
-  { x: "22%", y: "82%" }, { x: "78%", y: "80%" },
-  { x: "52%", y: "8%"  }, { x: "45%", y: "92%" },
+  { x: "8%",  y: "18%", s: 14 }, { x: "90%", y: "14%", s: 12 },
+  { x: "4%",  y: "54%", s: 10 }, { x: "94%", y: "48%", s: 16 },
+  { x: "18%", y: "82%", s: 12 }, { x: "82%", y: "78%", s: 14 },
+  { x: "50%", y: "7%",  s: 10 }, { x: "44%", y: "90%", s: 12 },
+  { x: "68%", y: "30%", s: 10 }, { x: "30%", y: "40%", s: 12 },
+  { x: "74%", y: "62%", s: 10 }, { x: "13%", y: "34%", s: 14 },
 ];
+
+function Sparkles() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {sparkles.map((s, i) => (
+        <span
+          key={i}
+          className="absolute select-none font-light text-grass-300"
+          style={{ left: s.x, top: s.y, fontSize: s.s }}
+        >
+          +
+        </span>
+      ))}
+    </div>
+  );
+}
 
 function Layer({
   opacity,
@@ -67,7 +85,7 @@ function Layer({
 
 function RightStage({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-lg">
+    <div className="relative mx-auto aspect-square w-full max-w-xl">
       {children}
     </div>
   );
@@ -87,51 +105,44 @@ export default function ScrollStage() {
   const o4 = useTransform(scrollYProgress, [0.62, 0.7, 0.78, 0.86], [0, 1, 1, 0]);
   const o5 = useTransform(scrollYProgress, [0.82, 0.9, 1], [0, 1, 1]);
 
-  // 场景4连线随进度生长
+  // 场景4连线生长
   const lineOffset = useTransform(scrollYProgress, [0.62, 0.76], [60, 0]);
+  // 场景5辐射线生长
+  const ringOffset = useTransform(scrollYProgress, [0.82, 0.96], [80, 0]);
 
   return (
     <section ref={ref} className="relative h-[400vh] bg-mist">
       <div className="sticky top-0 h-screen overflow-hidden">
+        <Sparkles />
 
         {/* 场景 1 · 登场 */}
         <Layer opacity={o1}>
-          {/* 背景装饰 + 号 */}
-          {sparkles.map((s, i) => (
-            <span
-              key={i}
-              className="pointer-events-none absolute select-none text-sm font-light text-grass-300"
-              style={{ left: s.x, top: s.y }}
-            >
-              +
-            </span>
-          ))}
-          <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-            <h1 className="font-serif text-5xl leading-[1.1] font-semibold tracking-tight text-ink sm:text-7xl">
+          <div className="mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center">
+            <h1 className="font-serif text-4xl leading-[1.15] font-semibold tracking-tight text-ink sm:text-7xl">
               {hero.titleLead}
-              <span className="text-grass-500">{hero.titleAccent}</span>
-              {hero.titleTail}
-              {hero.titleBrand}
+              <span className="text-grass-500">{hero.titleAccent}</span>,
+              <br />
+              就在 {hero.titleBrand}
               {hero.titleEnd}
             </h1>
-            <p className="mt-5 max-w-lg text-ink-soft">{hero.subtitle}</p>
-            <div className="mt-7 flex gap-3">
-              <span className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper">
+            <p className="mt-6 max-w-xl text-lg text-ink-soft">{hero.subtitle}</p>
+            <div className="mt-8 flex gap-3">
+              <span className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper">
                 {hero.primaryCta}
               </span>
-              <span className="flex items-center gap-1 rounded-full border border-grass-200 px-6 py-3 text-sm font-medium text-grass-700">
+              <span className="flex items-center gap-1 rounded-full border border-grass-200 px-7 py-3.5 text-sm font-medium text-grass-700">
                 {hero.secondaryCta}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                  <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
             </div>
             <img
               src={mascot("green")}
               alt=""
-              width={280}
-              height={280}
-              className="mt-10 h-[280px] w-[280px] drop-shadow-md animate-float"
+              width={340}
+              height={340}
+              className="mt-12 h-[340px] w-[340px] drop-shadow-md animate-float"
             />
           </div>
         </Layer>
@@ -142,18 +153,17 @@ export default function ScrollStage() {
             <img
               src={mascot("green")}
               alt=""
-              width={420}
-              height={420}
-              className="h-[420px] w-[420px] drop-shadow-lg animate-float"
+              width={440}
+              height={440}
+              className="h-[320px] w-[320px] drop-shadow-lg animate-float sm:h-[440px] sm:w-[440px]"
             />
           </div>
         </Layer>
 
         {/* 场景 3 · 能力 */}
         <Layer opacity={o3}>
-          <div className="mx-auto grid h-full max-w-6xl gap-8 px-6 md:grid-cols-2" style={{ alignItems: "center" }}>
-            {/* 文字靠下，模仿 moxt 「底部锚定」排版 */}
-            <div className="flex flex-col justify-end pb-20 md:h-full">
+          <div className="mx-auto grid h-full max-w-7xl items-center gap-10 px-6 md:grid-cols-2">
+            <div className="flex flex-col justify-center md:h-full md:justify-end md:pb-24">
               <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {capability.heading}
               </h2>
@@ -167,13 +177,13 @@ export default function ScrollStage() {
                 <img
                   src={mascot("green")}
                   alt=""
-                  width={220}
-                  height={220}
-                  className="h-[220px] w-[220px] animate-float"
+                  width={280}
+                  height={280}
+                  className="h-[200px] w-[200px] animate-float sm:h-[280px] sm:w-[280px]"
                 />
               </div>
               {/* 用户头像 badge */}
-              <div className="absolute right-[2%] top-[16%] flex items-center gap-2 rounded-full border border-line/60 bg-paper px-3 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+              <div className="absolute right-[4%] top-[8%] flex items-center gap-2 rounded-full border border-line/60 bg-paper px-3 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
                 <div
                   className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-bold"
                   style={{ background: "#4ade80", color: "#166534" }}
@@ -184,7 +194,7 @@ export default function ScrollStage() {
                   王总的 Kernel
                 </span>
               </div>
-              {/* 能力标签 */}
+              {/* 能力标签(6 个均匀环绕) */}
               {capability.bubbles.map((b) => (
                 <div
                   key={b.label}
@@ -203,7 +213,7 @@ export default function ScrollStage() {
 
         {/* 场景 4 · 团队 */}
         <Layer opacity={o4}>
-          <div className="mx-auto grid h-full max-w-6xl items-center gap-8 px-6 md:grid-cols-2">
+          <div className="mx-auto grid h-full max-w-7xl items-center gap-10 px-6 md:grid-cols-2">
             <div className="md:order-2">
               <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {personal.heading}
@@ -213,12 +223,8 @@ export default function ScrollStage() {
               </p>
             </div>
             <RightStage>
-              {/* SVG 辐射连线 */}
-              <svg
-                className="absolute inset-0 h-full w-full"
-                viewBox="0 0 100 100"
-                aria-hidden
-              >
+              {/* 辐射连线 */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
                 {svgLines.map(([x1, y1, x2, y2], i) => (
                   <motion.line
                     key={i}
@@ -231,10 +237,9 @@ export default function ScrollStage() {
                   />
                 ))}
               </svg>
-
               {/* 吉祥物 + 用户头像 */}
               {cluster.map((c) => {
-                const avatarSize = Math.round(c.size * 0.44);
+                const avatarSize = Math.round(c.size * 0.42);
                 return (
                   <div
                     key={c.name}
@@ -270,7 +275,7 @@ export default function ScrollStage() {
 
         {/* 场景 5 · 星座 */}
         <Layer opacity={o5}>
-          <div className="mx-auto grid h-full max-w-6xl items-center gap-8 px-6 md:grid-cols-2">
+          <div className="mx-auto grid h-full max-w-7xl items-center gap-10 px-6 md:grid-cols-2">
             <div>
               <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {oneSpace.heading}
@@ -280,15 +285,33 @@ export default function ScrollStage() {
               </p>
             </div>
             <RightStage>
-              <div className="absolute inset-[9%] rounded-full border border-dashed border-line" />
+              {/* 圆环 + 中心辐射连线(建立节点与中枢的联系) */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
+                <circle cx="50" cy="50" r="41" fill="none" stroke="var(--color-line)" strokeWidth="0.4" strokeDasharray="2 2" />
+                {oneSpace.nodes.map((_, i) => {
+                  const a = (i / n) * 2 * Math.PI - Math.PI / 2;
+                  const x = 50 + 41 * Math.cos(a);
+                  const y = 50 + 41 * Math.sin(a);
+                  return (
+                    <motion.line
+                      key={i}
+                      x1="50" y1="50" x2={x} y2={y}
+                      stroke="#4ade80"
+                      strokeWidth="0.4"
+                      strokeDasharray="50"
+                      strokeOpacity="0.4"
+                      style={{ strokeDashoffset: ringOffset }}
+                    />
+                  );
+                })}
+              </svg>
+              {/* 中枢 logo */}
               <div className="absolute top-1/2 left-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl bg-paper shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
                 <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden>
-                  <path
-                    d="M16 2 27.3 8.5v13L16 28 4.7 21.5v-13L16 2Z"
-                    fill="var(--color-grass-500)"
-                  />
+                  <path d="M16 2 27.3 8.5v13L16 28 4.7 21.5v-13L16 2Z" fill="var(--color-grass-500)" />
                 </svg>
               </div>
+              {/* 节点 */}
               {oneSpace.nodes.map((label, i) => {
                 const a = (i / n) * 2 * Math.PI - Math.PI / 2;
                 const x = 50 + 41 * Math.cos(a);

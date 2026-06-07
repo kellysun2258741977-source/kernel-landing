@@ -45,13 +45,12 @@ export const capability = {
   heading: "你的。",
   sub: "Kernel 懂零食。懂你的品牌。",
   bubbles: [
-    { label: "市场扫描", color: "sky", pos: { top: "6%", left: "52%" } },
-    { label: "趋势洞察", color: "grass", pos: { top: "30%", left: "84%" } },
-    { label: "配方知识", color: "tangerine", pos: { top: "62%", left: "82%" } },
-    { label: "竞品分析", color: "grape", pos: { top: "82%", left: "50%" } },
-    { label: "渠道规则", color: "rose", pos: { top: "62%", left: "8%" } },
-    { label: "文案生成", color: "sky", pos: { top: "30%", left: "6%" } },
-    { label: "合规校验", color: "grass", pos: { top: "2%", left: "18%" } },
+    { label: "市场扫描", color: "sky", pos: { top: "6%", left: "50%" } },
+    { label: "趋势洞察", color: "grass", pos: { top: "28%", left: "88%" } },
+    { label: "配方知识", color: "tangerine", pos: { top: "72%", left: "88%" } },
+    { label: "竞品分析", color: "grape", pos: { top: "94%", left: "50%" } },
+    { label: "渠道规则", color: "rose", pos: { top: "72%", left: "12%" } },
+    { label: "文案生成", color: "sky", pos: { top: "28%", left: "12%" } },
   ],
 };
 
