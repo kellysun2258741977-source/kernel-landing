@@ -88,10 +88,10 @@ body {
 /* ---------- 滚动揭示 ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(28px) scale(0.97);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 .reveal.is-visible {
@@ -99,10 +99,26 @@ body {
   transform: none;
 }
 
+/* hero 元素逐个上升入场 */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-rise {
+  animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-blob,
-  .animate-spin-slow {
+  .animate-spin-slow,
+  .animate-rise {
     animation: none;
   }
   .reveal {

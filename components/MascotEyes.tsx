@@ -12,10 +12,11 @@ const EYES = [
 const FACE = "#73d785";
 
 /**
- * 豆子吉祥物 + 跟随鼠标的极简眼睛(复刻 moxt 手法)。
- * moxt 的眼睛是深色 SVG,整组随鼠标 translate、无白眼眶。
- * 这里 PNG 上先用同色羽化块盖掉原黑点,再叠一对深色极简眼珠,
- * 眼珠随鼠标方向整体平移。容器尺寸由 className 决定。
+ * 豆子吉祥物 + 跟随鼠标(复刻 moxt 双层视差手法)。
+ * - 外层(ref)只用于测量,不加 transform,避免反馈抖动
+ * - 视差层:整个吉祥物朝鼠标方向轻微平移(身体探向鼠标)
+ * - float 层:CSS 呼吸浮动
+ * - 眼珠:在脸上大幅跟随鼠标(同色块先抹掉 PNG 原黑点)
  */
 export default function MascotEyes({
   src,
@@ -25,56 +26,67 @@ export default function MascotEyes({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState({ dx: 0, dy: 0 });
+  const [eye, setEye] = useState({ dx: 0, dy: 0 });
+  const [par, setPar] = useState({ dx: 0, dy: 0 });
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      const ang = Math.atan2(
-        e.clientY - (r.top + r.height / 2),
-        e.clientX - (r.left + r.width / 2),
-      );
-      const max = r.width * 0.022;
-      setP({ dx: Math.cos(ang) * max, dy: Math.sin(ang) * max });
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const ang = Math.atan2(e.clientY - cy, e.clientX - cx);
+      const dist = Math.min(1, Math.hypot(e.clientX - cx, e.clientY - cy) / 650);
+      setEye({ dx: Math.cos(ang) * r.width * 0.022, dy: Math.sin(ang) * r.width * 0.022 });
+      setPar({ dx: Math.cos(ang) * r.width * 0.022 * dist, dy: Math.sin(ang) * r.width * 0.022 * dist });
     };
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   return (
-    <div ref={ref} className={`relative animate-float ${className}`}>
-      <img src={src} alt="" className="h-full w-full drop-shadow-lg" />
-      {EYES.map((e, i) => (
-        <Fragment key={i}>
-          {/* 同色羽化盖块:抹掉 PNG 原黑点 */}
-          <div
-            className="pointer-events-none absolute rounded-full"
-            style={{
-              left: `${e.cx}%`,
-              top: `${e.cy}%`,
-              width: "13%",
-              height: "13%",
-              transform: "translate(-50%, -50%)",
-              background: FACE,
-              filter: "blur(2px)",
-            }}
-          />
-          {/* 极简深色眼珠:整体随鼠标平移 */}
-          <div
-            className="pointer-events-none absolute rounded-full bg-[#1c2a1c]"
-            style={{
-              left: `${e.cx}%`,
-              top: `${e.cy}%`,
-              width: "5%",
-              height: "6.4%",
-              transform: `translate(calc(-50% + ${p.dx}px), calc(-50% + ${p.dy}px))`,
-              transition: "transform 0.12s ease-out",
-            }}
-          />
-        </Fragment>
-      ))}
+    <div ref={ref} className={`relative ${className}`}>
+      <div
+        className="h-full w-full"
+        style={{
+          transform: `translate(${par.dx}px, ${par.dy}px)`,
+          transition: "transform 0.35s ease-out",
+        }}
+      >
+        <div className="relative h-full w-full animate-float">
+          <img src={src} alt="" className="h-full w-full drop-shadow-lg" />
+          {EYES.map((e, i) => (
+            <Fragment key={i}>
+              {/* 同色羽化盖块:抹掉 PNG 原黑点 */}
+              <div
+                className="pointer-events-none absolute rounded-full"
+                style={{
+                  left: `${e.cx}%`,
+                  top: `${e.cy}%`,
+                  width: "13%",
+                  height: "13%",
+                  transform: "translate(-50%, -50%)",
+                  background: FACE,
+                  filter: "blur(2px)",
+                }}
+              />
+              {/* 极简深色眼珠:整体随鼠标平移 */}
+              <div
+                className="pointer-events-none absolute rounded-full bg-[#1c2a1c]"
+                style={{
+                  left: `${e.cx}%`,
+                  top: `${e.cy}%`,
+                  width: "5%",
+                  height: "6.4%",
+                  transform: `translate(calc(-50% + ${eye.dx}px), calc(-50% + ${eye.dy}px))`,
+                  transition: "transform 0.12s ease-out",
+                }}
+              />
+            </Fragment>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

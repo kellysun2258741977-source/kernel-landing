@@ -123,15 +123,23 @@ export default function ScrollStage() {
         {/* 场景 1 · 登场 */}
         <Layer opacity={o1}>
           <div className="mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center">
-            <h1 className="font-serif text-4xl leading-[1.15] font-semibold tracking-tight text-ink sm:text-7xl">
+            <h1 className="animate-rise font-serif text-4xl leading-[1.15] font-semibold tracking-tight text-ink sm:text-7xl">
               {hero.titleLead}
               <span className="text-grass-500">{hero.titleAccent}</span>,
               <br />
               就在 {hero.titleBrand}
               {hero.titleEnd}
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-ink-soft">{hero.subtitle}</p>
-            <div className="pointer-events-auto mt-8 flex gap-3">
+            <p
+              className="mt-6 max-w-xl text-lg text-ink-soft animate-rise"
+              style={{ animationDelay: "0.12s" }}
+            >
+              {hero.subtitle}
+            </p>
+            <div
+              className="pointer-events-auto mt-8 flex gap-3 animate-rise"
+              style={{ animationDelay: "0.24s" }}
+            >
               <a
                 href="#pricing"
                 className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95"
