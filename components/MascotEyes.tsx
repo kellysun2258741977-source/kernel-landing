@@ -4,8 +4,8 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 // 眼睛中心在 green.png 的位置(扫描暗像素定位,占容器百分比)
 const EYES = [
-  { cx: 40.8, cy: 61 },
-  { cx: 56.2, cy: 61 },
+  { cx: 41, cy: 61 },
+  { cx: 54, cy: 61 },
 ];
 
 // 眼区脸色(PIL 采样),用作盖块把 PNG 原黑点抹掉
@@ -64,8 +64,8 @@ export default function MascotEyes({
                 style={{
                   left: `${e.cx}%`,
                   top: `${e.cy}%`,
-                  width: "13%",
-                  height: "13%",
+                  width: "14.5%",
+                  height: "14.5%",
                   transform: "translate(-50%, -50%)",
                   background: FACE,
                   filter: "blur(2px)",
