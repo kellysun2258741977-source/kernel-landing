@@ -99,6 +99,21 @@ export const chat = {
       "约 20 秒。先开跑了 ✦",
     ],
   },
+  // 团队其他角色的跟进消息(复刻 moxt 多人协作的消息流)
+  followups: [
+    {
+      mascot: "orange",
+      name: "Kernel · 配方灵感",
+      time: "10:27",
+      text: "等选品方向出来,我接着发散配方概念,给你 3 张概念卡。",
+    },
+    {
+      mascot: "blue",
+      name: "Kernel · 竞品监控",
+      time: "10:27",
+      text: "已盯上这几个赛道的头部竞品,定价和上新有动静随时同步。",
+    },
+  ],
 };
 
 // 「看看 Kernel 能做什么」—— 卡片网格
@@ -308,6 +323,12 @@ export const finalCta = {
 export const footer = {
   tagline: "From Kernel to Shelf.",
   copyright: "© 2026 Kernel. 版权所有。",
+  social: [
+    { label: "小红书", glyph: "📕" },
+    { label: "抖音", glyph: "🎵" },
+    { label: "微信公众号", glyph: "💬" },
+    { label: "B站", glyph: "📺" },
+  ],
   columns: [
     {
       title: "产品",

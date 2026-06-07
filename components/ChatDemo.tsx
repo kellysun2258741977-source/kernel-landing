@@ -66,6 +66,25 @@ export default function ChatDemo() {
                     </div>
                   </div>
                 </div>
+                {/* 团队其他角色跟进 */}
+                {chat.followups.map((f) => (
+                  <div key={f.name} className="flex gap-3">
+                    <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-lg bg-mist">
+                      <img src={mascot(f.mascot)} alt="" width={30} height={30} />
+                    </div>
+                    <div>
+                      <p className="text-sm">
+                        <span className="font-semibold text-ink">{f.name}</span>
+                        <span className="ml-2 text-xs text-ink-faint">
+                          {f.time}
+                        </span>
+                      </p>
+                      <p className="mt-1 text-[15px] leading-relaxed text-ink">
+                        {f.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -1,15 +1,9 @@
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
-import { agents } from "@/lib/content";
+import { agents, mascot } from "@/lib/content";
 
-const iconBg = [
-  "bg-grass-50 text-grass-600",
-  "bg-amber-50 text-tangerine",
-  "bg-rose-50 text-rose",
-  "bg-sky-50 text-sky",
-  "bg-violet-50 text-grape",
-  "bg-grass-50 text-grass-600",
-];
+// 每张能力卡配一个坚果吉祥物头像(复刻 moxt 的彩色角色图标)
+const cardMascot = ["green", "orange", "red", "purple", "blue", "teal"];
 
 export default function AgentGrid() {
   return (
@@ -27,11 +21,14 @@ export default function AgentGrid() {
             delay={(i % 3) * 90}
             className="group rounded-2xl border border-line bg-paper p-6 transition-all hover:-translate-y-1 hover:border-grass-200 hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)]"
           >
-            <div
-              className={`mb-4 grid h-11 w-11 place-items-center rounded-xl ${iconBg[i % iconBg.length]}`}
-            >
-              <Icon name={c.icon} className="h-5 w-5" />
-            </div>
+            <img
+              src={mascot(cardMascot[i % cardMascot.length])}
+              alt=""
+              width={52}
+              height={52}
+              className="mb-4 h-13 w-13 drop-shadow-sm transition-transform group-hover:scale-110"
+              style={{ height: 52, width: 52 }}
+            />
             <h3 className="text-lg font-semibold text-ink">{c.title}</h3>
             <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">
               {c.desc}

@@ -11,6 +11,19 @@ export default function Footer() {
             <p className="mt-4 font-serif text-2xl text-ink">
               {footer.tagline}
             </p>
+            <div className="mt-5 flex gap-2.5">
+              {footer.social.map((s) => (
+                <a
+                  key={s.label}
+                  href="#"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-line bg-paper text-base transition-colors hover:border-grass-200 hover:bg-grass-50"
+                >
+                  {s.glyph}
+                </a>
+              ))}
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
             {footer.columns.map((col) => (

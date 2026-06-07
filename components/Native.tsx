@@ -1,5 +1,8 @@
 import Reveal from "./Reveal";
-import { native, mascot } from "@/lib/content";
+import { native } from "@/lib/content";
+
+// 三张卡复用手绘场景大图(复刻 moxt 的横构图插画卡)
+const cardScene = ["insight", "memory", "content"];
 
 export default function Native() {
   return (
@@ -19,24 +22,23 @@ export default function Native() {
           <Reveal
             key={c.title}
             delay={i * 100}
-            className="rounded-3xl border border-line bg-paper p-7"
+            className="overflow-hidden rounded-3xl border border-line bg-paper transition-all hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.08)]"
           >
-            <div
-              className={`mb-6 grid h-40 place-items-center rounded-2xl ${c.tint}`}
-            >
+            <div className={`overflow-hidden ${c.tint}`}>
               <img
-                src={mascot(c.mascot)}
+                src={`/assets/scenes/${cardScene[i % cardScene.length]}.png`}
                 alt=""
-                width={108}
-                height={108}
-                className="h-[108px] w-[108px] animate-float drop-shadow-sm"
-                style={{ animationDelay: `${i * 0.5}s` }}
+                width={520}
+                height={300}
+                className="h-52 w-full object-cover"
               />
             </div>
-            <h3 className="text-xl font-semibold text-ink">{c.title}</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
-              {c.desc}
-            </p>
+            <div className="p-7">
+              <h3 className="text-xl font-semibold text-ink">{c.title}</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">
+                {c.desc}
+              </p>
+            </div>
           </Reveal>
         ))}
       </div>
