@@ -19,25 +19,33 @@ const dotColor: Record<string, string> = {
   rose: "bg-rose",
 };
 
-// 场景4 团队成员：吉祥物 + 用户头像
+// 场景4 hub-and-spoke：绿色主角居中，6 个角色辐射分布
 const cluster = [
-  { name: "green",  size: 92, top: "30%", left: "50%", user: "王", bg: "#4ade80", fg: "#166534" },
-  { name: "purple", size: 64, top: "12%", left: "24%", user: "李", bg: "#a78bfa", fg: "#4c1d95" },
-  { name: "orange", size: 70, top: "16%", left: "76%", user: "张", bg: "#fb923c", fg: "#7c2d12" },
-  { name: "blue",   size: 56, top: "62%", left: "26%", user: "陈", bg: "#60a5fa", fg: "#1e3a8a" },
-  { name: "red",    size: 60, top: "66%", left: "74%", user: "赵", bg: "#f87171", fg: "#7f1d1d" },
-  { name: "teal",   size: 50, top: "8%",  left: "52%", user: "刘", bg: "#2dd4bf", fg: "#134e4a" },
-  { name: "yellow", size: 46, top: "74%", left: "50%", user: "吴", bg: "#facc15", fg: "#713f12" },
+  { name: "green",  size: 100, top: "50%", left: "50%", user: "王", bg: "#4ade80", fg: "#166534" }, // center hub
+  { name: "teal",   size: 56,  top: "10%", left: "50%", user: "刘", bg: "#2dd4bf", fg: "#134e4a" }, // top
+  { name: "orange", size: 68,  top: "24%", left: "84%", user: "张", bg: "#fb923c", fg: "#7c2d12" }, // top-right
+  { name: "red",    size: 62,  top: "76%", left: "82%", user: "赵", bg: "#f87171", fg: "#7f1d1d" }, // bottom-right
+  { name: "yellow", size: 52,  top: "90%", left: "50%", user: "吴", bg: "#facc15", fg: "#713f12" }, // bottom
+  { name: "blue",   size: 58,  top: "76%", left: "18%", user: "陈", bg: "#60a5fa", fg: "#1e3a8a" }, // bottom-left
+  { name: "purple", size: 66,  top: "24%", left: "16%", user: "李", bg: "#a78bfa", fg: "#4c1d95" }, // top-left
 ];
 
-// SVG 连线：从绿色吉祥物(50,30)到其余6个，坐标 = cluster % 值
+// SVG 连线从中心 (50,50) 辐射到 6 个节点
 const svgLines = [
-  [50, 30, 24, 12],
-  [50, 30, 76, 16],
-  [50, 30, 52,  8],
-  [50, 30, 26, 62],
-  [50, 30, 74, 66],
-  [50, 30, 50, 74],
+  [50, 50, 50, 10],
+  [50, 50, 84, 24],
+  [50, 50, 82, 76],
+  [50, 50, 50, 90],
+  [50, 50, 18, 76],
+  [50, 50, 16, 24],
+];
+
+// 场景1 装饰性小 + 号，模仿 moxt 背景点缀
+const sparkles = [
+  { x: "10%", y: "20%" }, { x: "88%", y: "16%" },
+  { x: "6%",  y: "60%" }, { x: "92%", y: "55%" },
+  { x: "22%", y: "82%" }, { x: "78%", y: "80%" },
+  { x: "52%", y: "8%"  }, { x: "45%", y: "92%" },
 ];
 
 function Layer({
@@ -59,7 +67,7 @@ function Layer({
 
 function RightStage({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-md">
+    <div className="relative mx-auto aspect-square w-full max-w-lg">
       {children}
     </div>
   );
@@ -79,42 +87,51 @@ export default function ScrollStage() {
   const o4 = useTransform(scrollYProgress, [0.62, 0.7, 0.78, 0.86], [0, 1, 1, 0]);
   const o5 = useTransform(scrollYProgress, [0.82, 0.9, 1], [0, 1, 1]);
 
-  // 场景4连线：随进度 0.62→0.76 从隐到显 (strokeDashoffset 50→0)
-  const lineOffset = useTransform(scrollYProgress, [0.62, 0.76], [50, 0]);
+  // 场景4连线随进度生长
+  const lineOffset = useTransform(scrollYProgress, [0.62, 0.76], [60, 0]);
 
   return (
-    <section ref={ref} className="relative h-[400vh] bg-paper">
+    <section ref={ref} className="relative h-[400vh] bg-mist">
       <div className="sticky top-0 h-screen overflow-hidden">
-        <motion.div
-          style={{ scaleX: scrollYProgress }}
-          className="absolute top-0 left-0 z-50 h-1 w-full origin-left bg-grass-500"
-        />
 
         {/* 场景 1 · 登场 */}
         <Layer opacity={o1}>
+          {/* 背景装饰 + 号 */}
+          {sparkles.map((s, i) => (
+            <span
+              key={i}
+              className="pointer-events-none absolute select-none text-sm font-light text-grass-300"
+              style={{ left: s.x, top: s.y }}
+            >
+              +
+            </span>
+          ))}
           <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-            <h1 className="font-serif text-4xl leading-tight font-semibold tracking-tight text-ink sm:text-6xl">
+            <h1 className="font-serif text-5xl leading-[1.1] font-semibold tracking-tight text-ink sm:text-7xl">
               {hero.titleLead}
               <span className="text-grass-500">{hero.titleAccent}</span>
               {hero.titleTail}
               {hero.titleBrand}
               {hero.titleEnd}
             </h1>
-            <p className="mt-5 max-w-md text-ink-soft">{hero.subtitle}</p>
+            <p className="mt-5 max-w-lg text-ink-soft">{hero.subtitle}</p>
             <div className="mt-7 flex gap-3">
               <span className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper">
                 {hero.primaryCta}
               </span>
-              <span className="rounded-full border border-grass-200 px-6 py-3 text-sm font-medium text-grass-700">
+              <span className="flex items-center gap-1 rounded-full border border-grass-200 px-6 py-3 text-sm font-medium text-grass-700">
                 {hero.secondaryCta}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </span>
             </div>
             <img
               src={mascot("green")}
               alt=""
-              width={150}
-              height={150}
-              className="mt-8 h-[150px] w-[150px] drop-shadow-sm animate-float"
+              width={280}
+              height={280}
+              className="mt-10 h-[280px] w-[280px] drop-shadow-md animate-float"
             />
           </div>
         </Layer>
@@ -125,21 +142,22 @@ export default function ScrollStage() {
             <img
               src={mascot("green")}
               alt=""
-              width={340}
-              height={340}
-              className="h-[340px] w-[340px] drop-shadow-md animate-float"
+              width={420}
+              height={420}
+              className="h-[420px] w-[420px] drop-shadow-lg animate-float"
             />
           </div>
         </Layer>
 
         {/* 场景 3 · 能力 */}
         <Layer opacity={o3}>
-          <div className="mx-auto grid h-full max-w-6xl items-center gap-8 px-6 md:grid-cols-2">
-            <div>
-              <h2 className="font-serif text-5xl font-semibold text-ink sm:text-6xl">
+          <div className="mx-auto grid h-full max-w-6xl gap-8 px-6 md:grid-cols-2" style={{ alignItems: "center" }}>
+            {/* 文字靠下，模仿 moxt 「底部锚定」排版 */}
+            <div className="flex flex-col justify-end pb-20 md:h-full">
+              <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {capability.heading}
               </h2>
-              <p className="mt-4 max-w-sm text-lg text-ink-soft">
+              <p className="mt-3 max-w-sm text-lg text-ink-soft">
                 {capability.sub}
               </p>
             </div>
@@ -149,13 +167,13 @@ export default function ScrollStage() {
                 <img
                   src={mascot("green")}
                   alt=""
-                  width={150}
-                  height={150}
-                  className="h-[150px] w-[150px] animate-float"
+                  width={220}
+                  height={220}
+                  className="h-[220px] w-[220px] animate-float"
                 />
               </div>
-              {/* 用户头像 badge（复刻 moxt "Ethan's momo" 样式）*/}
-              <div className="absolute right-[4%] top-[18%] flex items-center gap-2 rounded-full border border-line/60 bg-paper px-3 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+              {/* 用户头像 badge */}
+              <div className="absolute right-[2%] top-[16%] flex items-center gap-2 rounded-full border border-line/60 bg-paper px-3 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
                 <div
                   className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-bold"
                   style={{ background: "#4ade80", color: "#166534" }}
@@ -187,7 +205,7 @@ export default function ScrollStage() {
         <Layer opacity={o4}>
           <div className="mx-auto grid h-full max-w-6xl items-center gap-8 px-6 md:grid-cols-2">
             <div className="md:order-2">
-              <h2 className="font-serif text-5xl font-semibold text-ink sm:text-6xl">
+              <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {personal.heading}
               </h2>
               <p className="mt-4 max-w-sm text-lg text-ink-soft">
@@ -195,7 +213,7 @@ export default function ScrollStage() {
               </p>
             </div>
             <RightStage>
-              {/* SVG 虚线连接（随场景进入生长）*/}
+              {/* SVG 辐射连线 */}
               <svg
                 className="absolute inset-0 h-full w-full"
                 viewBox="0 0 100 100"
@@ -205,9 +223,10 @@ export default function ScrollStage() {
                   <motion.line
                     key={i}
                     x1={x1} y1={y1} x2={x2} y2={y2}
-                    stroke="var(--color-line, #d1d5db)"
-                    strokeWidth="0.6"
-                    strokeDasharray="50"
+                    stroke="#4ade80"
+                    strokeWidth="0.5"
+                    strokeDasharray="60"
+                    strokeOpacity="0.5"
                     style={{ strokeDashoffset: lineOffset }}
                   />
                 ))}
@@ -215,14 +234,13 @@ export default function ScrollStage() {
 
               {/* 吉祥物 + 用户头像 */}
               {cluster.map((c) => {
-                const avatarSize = Math.round(c.size * 0.42);
+                const avatarSize = Math.round(c.size * 0.44);
                 return (
                   <div
                     key={c.name}
                     className="absolute -translate-x-1/2 -translate-y-1/2"
                     style={{ top: c.top, left: c.left }}
                   >
-                    {/* 用户头像圆形，压在吉祥物上方 */}
                     <div
                       className="relative z-10 mx-auto -mb-2 grid place-items-center rounded-full border-2 border-paper font-bold shadow-sm"
                       style={{
@@ -254,7 +272,7 @@ export default function ScrollStage() {
         <Layer opacity={o5}>
           <div className="mx-auto grid h-full max-w-6xl items-center gap-8 px-6 md:grid-cols-2">
             <div>
-              <h2 className="font-serif text-5xl font-semibold text-ink sm:text-6xl">
+              <h2 className="font-serif text-6xl font-semibold text-ink sm:text-7xl">
                 {oneSpace.heading}
               </h2>
               <p className="mt-4 max-w-sm text-lg text-ink-soft">
@@ -263,8 +281,8 @@ export default function ScrollStage() {
             </div>
             <RightStage>
               <div className="absolute inset-[9%] rounded-full border border-dashed border-line" />
-              <div className="absolute top-1/2 left-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl bg-paper shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
-                <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden>
+              <div className="absolute top-1/2 left-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl bg-paper shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+                <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden>
                   <path
                     d="M16 2 27.3 8.5v13L16 28 4.7 21.5v-13L16 2Z"
                     fill="var(--color-grass-500)"
@@ -284,9 +302,9 @@ export default function ScrollStage() {
                     <img
                       src={mascot(mascots[i % mascots.length])}
                       alt=""
-                      width={36}
-                      height={36}
-                      className="h-9 w-9"
+                      width={44}
+                      height={44}
+                      className="h-11 w-11"
                     />
                     <span className="text-center text-xs font-medium text-ink-soft">
                       {label}
