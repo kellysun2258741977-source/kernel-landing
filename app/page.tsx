@@ -1,8 +1,5 @@
 import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import CapabilityOrbit from "@/components/CapabilityOrbit";
-import PersonalBrand from "@/components/PersonalBrand";
-import OneSpace from "@/components/OneSpace";
+import ScrollStage from "@/components/ScrollStage";
 import ChatDemo from "@/components/ChatDemo";
 import AgentGrid from "@/components/AgentGrid";
 import Pipeline from "@/components/Pipeline";
@@ -18,10 +15,7 @@ export default function Home() {
     <>
       <Nav />
       <main>
-        <Hero />
-        <CapabilityOrbit />
-        <PersonalBrand />
-        <OneSpace />
+        <ScrollStage />
         <ChatDemo />
         <AgentGrid />
         <Pipeline />

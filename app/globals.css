@@ -28,6 +28,15 @@
   --font-serif: var(--font-lora), Georgia, "Times New Roman", serif;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
 html {
   scroll-behavior: smooth;
 }
