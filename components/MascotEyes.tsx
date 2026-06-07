@@ -1,17 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
-// 眼睛在 green.png 中的位置(占容器百分比) —— 截图校准
+// 眼睛中心在 green.png 的位置(扫描暗像素定位,占容器百分比)
 const EYES = [
-  { cx: 43, cy: 59 },
-  { cx: 59, cy: 58 },
+  { cx: 40.8, cy: 61 },
+  { cx: 56.2, cy: 61 },
 ];
 
+// 眼区脸色(PIL 采样),用作盖块把 PNG 原黑点抹掉
+const FACE = "#73d785";
+
 /**
- * 豆子吉祥物 + 跟随鼠标的眼珠。
- * 在 PNG 原眼睛位置叠加白眼眶,黑瞳孔随鼠标方向在眶内移动。
- * 容器尺寸由 className(h-/w-) 决定;float 呼吸动效在容器上,眼睛随之同步。
+ * 豆子吉祥物 + 跟随鼠标的极简眼睛(复刻 moxt 手法)。
+ * moxt 的眼睛是深色 SVG,整组随鼠标 translate、无白眼眶。
+ * 这里 PNG 上先用同色羽化块盖掉原黑点,再叠一对深色极简眼珠,
+ * 眼珠随鼠标方向整体平移。容器尺寸由 className 决定。
  */
 export default function MascotEyes({
   src,
@@ -32,7 +36,7 @@ export default function MascotEyes({
         e.clientY - (r.top + r.height / 2),
         e.clientX - (r.left + r.width / 2),
       );
-      const max = r.width * 0.018;
+      const max = r.width * 0.022;
       setP({ dx: Math.cos(ang) * max, dy: Math.sin(ang) * max });
     };
     window.addEventListener("mousemove", onMove, { passive: true });
@@ -43,29 +47,33 @@ export default function MascotEyes({
     <div ref={ref} className={`relative animate-float ${className}`}>
       <img src={src} alt="" className="h-full w-full drop-shadow-lg" />
       {EYES.map((e, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-white"
-          style={{
-            width: "8.5%",
-            height: "8.5%",
-            left: `${e.cx}%`,
-            top: `${e.cy}%`,
-            transform: "translate(-50%, -50%)",
-          }}
-        >
+        <Fragment key={i}>
+          {/* 同色羽化盖块:抹掉 PNG 原黑点 */}
           <div
-            className="absolute rounded-full bg-[#1c1c1c]"
+            className="pointer-events-none absolute rounded-full"
             style={{
-              width: "58%",
-              height: "58%",
-              left: "50%",
-              top: "50%",
-              transform: `translate(calc(-50% + ${p.dx}px), calc(-50% + ${p.dy}px))`,
-              transition: "transform 0.1s ease-out",
+              left: `${e.cx}%`,
+              top: `${e.cy}%`,
+              width: "13%",
+              height: "13%",
+              transform: "translate(-50%, -50%)",
+              background: FACE,
+              filter: "blur(2px)",
             }}
           />
-        </div>
+          {/* 极简深色眼珠:整体随鼠标平移 */}
+          <div
+            className="pointer-events-none absolute rounded-full bg-[#1c2a1c]"
+            style={{
+              left: `${e.cx}%`,
+              top: `${e.cy}%`,
+              width: "5%",
+              height: "6.4%",
+              transform: `translate(calc(-50% + ${p.dx}px), calc(-50% + ${p.dy}px))`,
+              transition: "transform 0.12s ease-out",
+            }}
+          />
+        </Fragment>
       ))}
     </div>
   );
