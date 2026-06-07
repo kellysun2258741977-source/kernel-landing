@@ -40,14 +40,18 @@ const svgLines = [
   [50, 50, 12, 22],
 ];
 
-// 全局星星点缀(复刻 moxt 的散落 + 号,覆盖所有场景背景)
+// 全局星星点缀(复刻 moxt 的散落 ✦/+ 氛围,覆盖所有场景背景)
 const sparkles = [
-  { x: "8%",  y: "18%", s: 14 }, { x: "90%", y: "14%", s: 12 },
-  { x: "4%",  y: "54%", s: 10 }, { x: "94%", y: "48%", s: 16 },
-  { x: "18%", y: "82%", s: 12 }, { x: "82%", y: "78%", s: 14 },
-  { x: "50%", y: "7%",  s: 10 }, { x: "44%", y: "90%", s: 12 },
-  { x: "68%", y: "30%", s: 10 }, { x: "30%", y: "40%", s: 12 },
-  { x: "74%", y: "62%", s: 10 }, { x: "13%", y: "34%", s: 14 },
+  { x: "7%",  y: "16%", s: 18, c: "✦" }, { x: "90%", y: "13%", s: 13, c: "+" },
+  { x: "4%",  y: "52%", s: 12, c: "+" }, { x: "94%", y: "46%", s: 20, c: "✦" },
+  { x: "17%", y: "80%", s: 14, c: "✦" }, { x: "82%", y: "76%", s: 16, c: "+" },
+  { x: "50%", y: "6%",  s: 12, c: "+" }, { x: "44%", y: "90%", s: 15, c: "✦" },
+  { x: "67%", y: "28%", s: 12, c: "+" }, { x: "30%", y: "38%", s: 15, c: "✦" },
+  { x: "73%", y: "60%", s: 12, c: "+" }, { x: "13%", y: "32%", s: 17, c: "✦" },
+  { x: "60%", y: "84%", s: 13, c: "+" }, { x: "86%", y: "34%", s: 12, c: "+" },
+  { x: "24%", y: "62%", s: 14, c: "✦" }, { x: "38%", y: "22%", s: 12, c: "+" },
+  { x: "78%", y: "50%", s: 14, c: "✦" }, { x: "20%", y: "48%", s: 12, c: "+" },
+  { x: "55%", y: "42%", s: 11, c: "+" }, { x: "92%", y: "64%", s: 14, c: "✦" },
 ];
 
 function Sparkles() {
@@ -56,10 +60,10 @@ function Sparkles() {
       {sparkles.map((s, i) => (
         <span
           key={i}
-          className="absolute select-none font-light text-grass-300"
+          className="absolute select-none font-light text-grass-400/70"
           style={{ left: s.x, top: s.y, fontSize: s.s }}
         >
-          +
+          {s.c}
         </span>
       ))}
     </div>
@@ -126,17 +130,24 @@ export default function ScrollStage() {
               {hero.titleEnd}
             </h1>
             <p className="mt-6 max-w-xl text-lg text-ink-soft">{hero.subtitle}</p>
-            <div className="mt-8 flex gap-3">
-              <span className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper">
+            <div className="pointer-events-auto mt-8 flex gap-3">
+              <a
+                href="#pricing"
+                className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95"
+              >
                 {hero.primaryCta}
-              </span>
-              <span className="flex items-center gap-1 rounded-full border border-grass-200 px-7 py-3.5 text-sm font-medium text-grass-700">
+              </a>
+              <a
+                href="#capabilities"
+                className="flex items-center gap-1 rounded-full border border-grass-200 px-7 py-3.5 text-sm font-medium text-grass-700 transition-colors hover:bg-grass-50"
+              >
                 {hero.secondaryCta}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                   <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </span>
+              </a>
             </div>
+            {/* CTA 之后的吉祥物在 Layer 内,保持 pointer-events-none 由父级控制 */}
             <img
               src={mascot("green")}
               alt=""
@@ -181,18 +192,6 @@ export default function ScrollStage() {
                   height={280}
                   className="h-[200px] w-[200px] animate-float sm:h-[280px] sm:w-[280px]"
                 />
-              </div>
-              {/* 用户头像 badge */}
-              <div className="absolute right-[4%] top-[8%] flex items-center gap-2 rounded-full border border-line/60 bg-paper px-3 py-2 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-                <div
-                  className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-bold"
-                  style={{ background: "#4ade80", color: "#166534" }}
-                >
-                  王
-                </div>
-                <span className="whitespace-nowrap text-sm font-medium text-ink">
-                  王总的 Kernel
-                </span>
               </div>
               {/* 能力标签(6 个均匀环绕) */}
               {capability.bubbles.map((b) => (

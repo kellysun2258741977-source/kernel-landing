@@ -222,6 +222,7 @@ export const aDay = {
       agentText: "今天三条 workflow 的转化都记下来了,你的偏好已更新。",
       you: "你:",
       youText: "收到。",
+      dark: true,
     },
     {
       time: "23:30",
@@ -231,6 +232,7 @@ export const aDay = {
       agentText: "竞品页面、定价变动、媒体声量,扫完归档。有异常凌晨提醒你。",
       you: "你:",
       youText: "睡了,辛苦。",
+      dark: true,
     },
   ],
   loop: { time: "08:00", title: "循环继续" },

@@ -7,7 +7,7 @@ const cardMascot = ["green", "orange", "red", "purple", "blue", "teal"];
 
 export default function AgentGrid() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+    <section id="capabilities" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <Reveal className="mx-auto mb-14 max-w-2xl text-center">
         <h2 className="font-serif text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {agents.heading}
@@ -33,13 +33,16 @@ export default function AgentGrid() {
             <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">
               {c.desc}
             </p>
-            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-grass-600">
+            <a
+              href="#pricing"
+              className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-grass-600 transition-colors hover:text-grass-700"
+            >
               查看详情
               <Icon
                 name="arrow"
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
               />
-            </span>
+            </a>
           </Reveal>
         ))}
       </div>

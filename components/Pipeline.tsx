@@ -4,7 +4,7 @@ import { pipeline } from "@/lib/content";
 
 export default function Pipeline() {
   return (
-    <section className="bg-mist">
+    <section id="workflows" className="bg-mist">
       <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
         <Reveal className="mx-auto mb-14 max-w-2xl text-center">
           <h2 className="font-serif text-3xl leading-snug font-semibold tracking-tight text-ink sm:text-4xl">

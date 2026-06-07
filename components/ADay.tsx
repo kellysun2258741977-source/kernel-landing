@@ -48,41 +48,48 @@ export default function ADay() {
         onPointerCancel={onUp}
         className="flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto scroll-px-6 px-6 pb-4 select-none active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:[scroll-padding-left:max(1.5rem,calc((100vw-72rem)/2))] md:[padding-left:max(1.5rem,calc((100vw-72rem)/2))]"
       >
-        {aDay.cards.map((c) => (
-          <div
-            key={c.time}
-            className="w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-paper sm:w-[340px]"
-          >
-            <img
-              src={c.img}
-              alt={c.title}
-              width={640}
-              height={640}
-              draggable={false}
-              loading="lazy"
-              className="pointer-events-none aspect-[5/4] w-full object-cover object-top"
-            />
-            <div className="p-5">
-              <p className="flex items-center gap-2 text-sm font-medium text-grass-600">
-                <span className="h-2 w-2 rounded-full bg-grass-500" />
-                {c.time}
-              </p>
-              <h3 className="mt-2 text-lg font-semibold text-ink">{c.title}</h3>
-              <div className="mt-3 space-y-2 text-sm leading-relaxed">
-                <p className="text-ink-soft">
-                  <span className="font-semibold text-ink-faint">
-                    {c.agent}
-                  </span>{" "}
-                  {c.agentText}
+        {aDay.cards.map((c) => {
+          const dark = "dark" in c && c.dark;
+          return (
+            <div
+              key={c.time}
+              className={`w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border sm:w-[340px] ${dark ? "border-ink bg-ink" : "border-line bg-paper"}`}
+            >
+              <img
+                src={c.img}
+                alt={c.title}
+                width={640}
+                height={640}
+                draggable={false}
+                loading="lazy"
+                className="pointer-events-none aspect-square w-full object-cover object-top"
+              />
+              <div className="p-5">
+                <p className="flex items-center gap-2 text-sm font-medium text-grass-500">
+                  <span className="h-2 w-2 rounded-full bg-grass-500" />
+                  {c.time}
                 </p>
-                <p className="text-ink-soft">
-                  <span className="font-semibold text-ink-faint">{c.you}</span>{" "}
-                  {c.youText}
-                </p>
+                <h3 className={`mt-2 text-lg font-semibold ${dark ? "text-paper" : "text-ink"}`}>
+                  {c.title}
+                </h3>
+                <div className={`mt-3 space-y-2 text-sm leading-relaxed ${dark ? "text-paper/70" : "text-ink-soft"}`}>
+                  <p>
+                    <span className={`font-semibold ${dark ? "text-paper/50" : "text-ink-faint"}`}>
+                      {c.agent}
+                    </span>{" "}
+                    {c.agentText}
+                  </p>
+                  <p>
+                    <span className={`font-semibold ${dark ? "text-paper/50" : "text-ink-faint"}`}>
+                      {c.you}
+                    </span>{" "}
+                    {c.youText}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* 循环继续 —— 一天的收尾,对应 Moxt 的 loop 卡 */}
         <div className="flex w-[78vw] shrink-0 snap-start flex-col justify-center rounded-2xl border border-dashed border-grass-200 bg-grass-50/40 p-8 sm:w-[300px]">
