@@ -32,7 +32,7 @@ export default function ADay() {
   };
 
   return (
-    <section className="overflow-hidden py-24 md:py-32">
+    <section className="[overflow-x:clip] py-24 md:py-32">
       <Reveal className="mx-auto mb-14 max-w-6xl px-6 text-center">
         <h2 className="font-serif text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           {aDay.heading}
@@ -46,14 +46,18 @@ export default function ADay() {
         onPointerMove={onMove}
         onPointerUp={onUp}
         onPointerCancel={onUp}
-        className="flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto scroll-px-6 px-6 pb-4 select-none active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:[scroll-padding-left:max(1.5rem,calc((100vw-72rem)/2))] md:[padding-left:max(1.5rem,calc((100vw-72rem)/2))]"
+        className="flex cursor-grab snap-x snap-mandatory gap-5 overflow-x-auto scroll-px-6 px-6 pb-4 pt-2 select-none active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:[scroll-padding-left:max(1.5rem,calc((100vw-72rem)/2))] md:[padding-left:max(1.5rem,calc((100vw-72rem)/2))]"
       >
         {aDay.cards.map((c) => {
           const dark = "dark" in c && c.dark;
           return (
             <div
               key={c.time}
-              className={`w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border sm:w-[340px] ${dark ? "border-ink bg-ink" : "border-line bg-paper"}`}
+              className={`w-[78vw] shrink-0 snap-start overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(0,0,0,0.09)] sm:w-[340px] ${
+                dark
+                  ? "border-ink bg-ink hover:border-grass-400"
+                  : "border-line bg-paper hover:border-grass-300"
+              }`}
             >
               <img
                 src={c.img}

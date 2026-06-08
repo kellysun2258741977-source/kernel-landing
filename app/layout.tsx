@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import "./globals.css";
+import { WaitlistProvider } from "@/lib/waitlist-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,7 +41,9 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${inter.variable} ${lora.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <WaitlistProvider>{children}</WaitlistProvider>
+      </body>
     </html>
   );
 }

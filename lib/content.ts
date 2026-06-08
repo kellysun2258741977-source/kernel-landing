@@ -64,17 +64,10 @@ export const personal = {
 export const oneSpace = {
   heading: "一个空间。",
   sub: "三条工作流、所有 AI 节点,都在这里。一条流水线,一个空间。",
-  nodes: [
-    "意图澄清",
-    "市场扫描",
-    "机会评估",
-    "方案生成",
-    "质量校验",
-    "灵感发散",
-    "方案精炼",
-    "渠道适配",
-    "多版本输出",
-    "趋势分析",
+  workflows: [
+    { label: "选品洞察", color: "#4ade80", nodes: ["意图澄清", "市场扫描", "机会评估"] },
+    { label: "配方灵感", color: "#2dd4bf", nodes: ["灵感发散", "方案生成", "方案精炼"] },
+    { label: "营销内容", color: "#fb923c", nodes: ["渠道适配", "质量校验", "多版本输出"] },
   ],
 };
 
@@ -319,6 +312,40 @@ export const integrations = {
 export const finalCta = {
   heading: "现在就组建你的 AI 零食团队。",
   cta: "免费开始",
+};
+
+export const pricing = {
+  heading: "简单定价。",
+  sub: "按需升级,随时取消。",
+  plans: [
+    {
+      name: "探索",
+      price: "免费",
+      period: "",
+      desc: "适合个人研发者试水",
+      features: ["3 次工作流体验", "选品洞察 workflow", "基础内容导出"],
+      cta: "免费开始",
+      highlight: false,
+    },
+    {
+      name: "专业",
+      price: "¥599",
+      period: "/月",
+      desc: "适合独立品牌与小团队",
+      features: ["无限工作流运行", "全部三条 workflow", "多版本内容导出", "优先响应支持"],
+      cta: "立即体验",
+      highlight: true,
+    },
+    {
+      name: "团队",
+      price: "联系我们",
+      period: "",
+      desc: "适合中大型食品企业",
+      features: ["多账号协作", "私有数据接入", "定制 workflow", "专属客户成功"],
+      cta: "预约演示",
+      highlight: false,
+    },
+  ],
 };
 
 export const footer = {

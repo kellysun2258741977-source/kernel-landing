@@ -8,8 +8,6 @@ const EYES = [
   { cx: 54, cy: 61 },
 ];
 
-// 眼区脸色(PIL 采样),用作盖块把 PNG 原黑点抹掉
-const FACE = "#73d785";
 
 /**
  * 豆子吉祥物 + 跟随鼠标(复刻 moxt 双层视差手法)。
@@ -57,35 +55,20 @@ export default function MascotEyes({
         <div className="relative h-full w-full animate-float">
           <img src={src} alt="" className="h-full w-full drop-shadow-lg" />
           {EYES.map((e, i) => (
-            <Fragment key={i}>
-              {/* 同色羽化盖块:抹掉 PNG 原黑点 */}
-              <div
-                className="pointer-events-none absolute rounded-full"
-                style={{
-                  left: `${e.cx}%`,
-                  top: `${e.cy}%`,
-                  width: "14.5%",
-                  height: "14.5%",
-                  transform: "translate(-50%, -50%)",
-                  background: FACE,
-                  filter: "blur(2px)",
-                }}
-              />
-              {/* 极简深色眼珠:外层随鼠标平移,内层做眨眼(压扁) */}
-              <div
-                className="pointer-events-none absolute"
-                style={{
-                  left: `${e.cx}%`,
-                  top: `${e.cy}%`,
-                  width: "5%",
-                  height: "6.4%",
-                  transform: `translate(calc(-50% + ${eye.dx}px), calc(-50% + ${eye.dy}px))`,
-                  transition: "transform 0.12s ease-out",
-                }}
-              >
-                <div className="animate-blink h-full w-full rounded-full bg-[#1a1a1a]" />
-              </div>
-            </Fragment>
+            <div
+              key={i}
+              className="pointer-events-none absolute"
+              style={{
+                left: `${e.cx}%`,
+                top: `${e.cy}%`,
+                width: "5%",
+                height: "6.4%",
+                transform: `translate(calc(-50% + ${eye.dx}px), calc(-50% + ${eye.dy}px))`,
+                transition: "transform 0.12s ease-out",
+              }}
+            >
+              <div className="animate-blink h-full w-full rounded-full bg-[#1a1a1a]" />
+            </div>
           ))}
         </div>
       </div>

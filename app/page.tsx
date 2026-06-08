@@ -7,6 +7,7 @@ import ADay from "@/components/ADay";
 import Native from "@/components/Native";
 import Compare from "@/components/Compare";
 import Integrations from "@/components/Integrations";
+import Pricing from "@/components/Pricing";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 
@@ -23,6 +24,7 @@ export default function Home() {
         <Native />
         <Compare />
         <Integrations />
+        <Pricing />
         <FinalCTA />
       </main>
       <Footer />

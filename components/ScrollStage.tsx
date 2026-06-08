@@ -7,10 +7,10 @@ import {
   capability,
   personal,
   oneSpace,
-  mascots,
   mascot,
 } from "@/lib/content";
 import MascotEyes from "./MascotEyes";
+import { useWaitlist } from "@/lib/waitlist-context";
 
 const dotColor: Record<string, string> = {
   grass: "bg-grass-500",
@@ -97,13 +97,12 @@ function RightStage({ children }: { children: React.ReactNode }) {
 }
 
 export default function ScrollStage() {
+  const { open: openWaitlist } = useWaitlist();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
-  const n = oneSpace.nodes.length;
-
   const o1 = useTransform(scrollYProgress, [0, 0.14, 0.22, 1.0], [1, 1, 0, 0]);
   const o2 = useTransform(scrollYProgress, [0.18, 0.26, 0.38, 0.46], [0, 1, 1, 0]);
   const o3 = useTransform(scrollYProgress, [0.42, 0.5, 0.58, 0.66], [0, 1, 1, 0]);
@@ -113,7 +112,7 @@ export default function ScrollStage() {
   // 场景4连线生长
   const lineOffset = useTransform(scrollYProgress, [0.62, 0.76], [60, 0]);
   // 场景5辐射线生长
-  const ringOffset = useTransform(scrollYProgress, [0.82, 0.96], [80, 0]);
+  const ringOffset = useTransform(scrollYProgress, [0.82, 0.96], [100, 0]);
 
   return (
     <section ref={ref} className="relative h-[400vh] bg-mist">
@@ -140,12 +139,13 @@ export default function ScrollStage() {
               className="pointer-events-auto mt-8 flex gap-3 animate-rise"
               style={{ animationDelay: "0.24s" }}
             >
-              <a
-                href="#pricing"
+              <button
+                type="button"
+                onClick={openWaitlist}
                 className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95"
               >
                 {hero.primaryCta}
-              </a>
+              </button>
               <a
                 href="#capabilities"
                 className="flex items-center gap-1 rounded-full border border-grass-200 px-7 py-3.5 text-sm font-medium text-grass-700 transition-colors hover:bg-grass-50"
@@ -272,7 +272,7 @@ export default function ScrollStage() {
           </div>
         </Layer>
 
-        {/* 场景 5 · 星座 */}
+        {/* 场景 5 · 流水线 */}
         <Layer opacity={o5}>
           <div className="mx-auto grid h-full max-w-7xl items-center gap-10 px-6 md:grid-cols-2">
             <div>
@@ -284,56 +284,76 @@ export default function ScrollStage() {
               </p>
             </div>
             <RightStage>
-              {/* 圆环 + 中心辐射连线(建立节点与中枢的联系) */}
               <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
-                <circle cx="50" cy="50" r="41" fill="none" stroke="var(--color-line)" strokeWidth="0.4" strokeDasharray="2 2" />
-                {oneSpace.nodes.map((_, i) => {
-                  const a = (i / n) * 2 * Math.PI - Math.PI / 2;
-                  const x = 50 + 41 * Math.cos(a);
-                  const y = 50 + 41 * Math.sin(a);
-                  return (
-                    <motion.line
-                      key={i}
-                      x1="50" y1="50" x2={x} y2={y}
-                      stroke="#4ade80"
-                      strokeWidth="0.4"
-                      strokeDasharray="50"
-                      strokeOpacity="0.4"
-                      style={{ strokeDashoffset: ringOffset }}
-                    />
-                  );
-                })}
+                {/* Kernel → 主干分叉点 */}
+                <motion.line x1="22" y1="50" x2="30" y2="50"
+                  stroke="#4ade80" strokeWidth="0.7" strokeLinecap="round"
+                  strokeDasharray="100" style={{ strokeDashoffset: ringOffset }} />
+                {/* 竖干：中心向上 + 中心向下 */}
+                <motion.line x1="30" y1="50" x2="30" y2="22"
+                  stroke="var(--color-line)" strokeWidth="0.5" strokeLinecap="round"
+                  strokeDasharray="100" style={{ strokeDashoffset: ringOffset }} />
+                <motion.line x1="30" y1="50" x2="30" y2="78"
+                  stroke="var(--color-line)" strokeWidth="0.5" strokeLinecap="round"
+                  strokeDasharray="100" style={{ strokeDashoffset: ringOffset }} />
+                {/* 三条横向分支 */}
+                {oneSpace.workflows.map((wf, i) => (
+                  <motion.line key={i}
+                    x1="30" y1={[22, 50, 78][i]} x2="72" y2={[22, 50, 78][i]}
+                    stroke={wf.color} strokeWidth="0.6" strokeLinecap="round"
+                    strokeDasharray="100" style={{ strokeDashoffset: ringOffset }} />
+                ))}
+                {/* 节点圆点 */}
+                {oneSpace.workflows.map((wf, wi) =>
+                  [38, 51, 64].map((x, ni) => (
+                    <circle key={`${wi}-${ni}`}
+                      cx={x} cy={[22, 50, 78][wi]} r="2"
+                      fill={wf.color} fillOpacity="0.85" />
+                  ))
+                )}
               </svg>
-              {/* 中枢 logo */}
-              <div className="absolute top-1/2 left-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl bg-paper shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
-                <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden>
+
+              {/* Kernel hub */}
+              <div className="absolute top-1/2 left-[19%] grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-xl bg-paper shadow-[0_4px_16px_rgba(0,0,0,0.1)]">
+                <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden>
                   <path d="M16 2 27.3 8.5v13L16 28 4.7 21.5v-13L16 2Z" fill="var(--color-grass-500)" />
                 </svg>
               </div>
-              {/* 节点 */}
-              {oneSpace.nodes.map((label, i) => {
-                const a = (i / n) * 2 * Math.PI - Math.PI / 2;
-                const x = 50 + 41 * Math.cos(a);
-                const y = 50 + 41 * Math.sin(a);
-                return (
+
+              {/* 节点文字标签 */}
+              {oneSpace.workflows.map((wf, wi) =>
+                [38, 51, 64].map((x, ni) => (
                   <div
-                    key={label}
-                    className="absolute flex w-20 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
-                    style={{ top: `${y}%`, left: `${x}%` }}
+                    key={`lbl-${wi}-${ni}`}
+                    className="absolute"
+                    style={{
+                      top: `${[22, 50, 78][wi]}%`,
+                      left: `${x}%`,
+                      transform: "translate(-50%, 6px)",
+                    }}
                   >
-                    <img
-                      src={mascot(mascots[i % mascots.length])}
-                      alt=""
-                      width={44}
-                      height={44}
-                      className="h-11 w-11"
-                    />
-                    <span className="text-center text-xs font-medium text-ink-soft">
-                      {label}
+                    <span className="block whitespace-nowrap text-[9px] leading-tight text-ink-soft">
+                      {wf.nodes[ni]}
                     </span>
                   </div>
-                );
-              })}
+                ))
+              )}
+
+              {/* 工作流标签 */}
+              {oneSpace.workflows.map((wf, i) => (
+                <div
+                  key={wf.label}
+                  className="absolute"
+                  style={{ top: `${[22, 50, 78][i]}%`, left: "74%", transform: "translateY(-50%)" }}
+                >
+                  <span
+                    className="block rounded-full px-2 py-0.5 text-[9px] font-semibold leading-tight whitespace-nowrap"
+                    style={{ background: wf.color + "28", color: wf.color }}
+                  >
+                    {wf.label}
+                  </span>
+                </div>
+              ))}
             </RightStage>
           </div>
         </Layer>

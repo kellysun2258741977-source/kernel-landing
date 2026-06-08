@@ -1,10 +1,11 @@
 import Reveal from "./Reveal";
 import { Icon } from "./Icons";
 import { finalCta } from "@/lib/content";
+import WaitlistButton from "./WaitlistButton";
 
 export default function FinalCTA() {
   return (
-    <section id="pricing" className="relative overflow-hidden px-6 py-28 md:py-36">
+    <section className="relative overflow-hidden px-6 py-28 md:py-36">
       <div className="pointer-events-none absolute inset-0 -z-10 mx-auto my-auto h-[420px] max-w-3xl rounded-full bg-grass-100/50 blur-[130px]" />
       <Reveal className="mx-auto max-w-2xl text-center">
         <div className="mb-7 flex items-center justify-center gap-3">
@@ -26,13 +27,10 @@ export default function FinalCTA() {
           {finalCta.heading}
         </p>
         <div className="mt-9 flex justify-center">
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 text-base font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95"
-          >
+          <WaitlistButton className="inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 text-base font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95">
             {finalCta.cta}
             <Icon name="arrow" className="h-4 w-4" />
-          </a>
+          </WaitlistButton>
         </div>
       </Reveal>
     </section>

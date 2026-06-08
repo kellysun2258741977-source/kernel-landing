@@ -1,5 +1,6 @@
 import Logo from "./Logo";
 import { nav } from "@/lib/content";
+import WaitlistButton from "./WaitlistButton";
 
 export default function Nav() {
   return (
@@ -17,12 +18,9 @@ export default function Nav() {
             </a>
           ))}
         </div>
-        <a
-          href="#pricing"
-          className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95"
-        >
+        <WaitlistButton className="rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-transform hover:scale-[1.03] active:scale-95">
           {nav.cta}
-        </a>
+        </WaitlistButton>
       </nav>
     </header>
   );
