@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 眼睛中心在 green.png 的位置(扫描暗像素定位,占容器百分比)
 const EYES = [
